@@ -6,6 +6,7 @@ pipeline {
     agent {
       node {
         // TODO: run this simple pipeline on jenkins 'master' node
+       label 'master'
       }
     }
 
@@ -19,6 +20,18 @@ pipeline {
                                 echo "stage 1: using project: ${openshift.project()} in cluster ${openshift.cluster()}"
                         }
                     }
+                }
+            }
+        }
+        stage('stage 2') {
+            steps {
+                sh 'echo hello from stage2!'
+            }
+        }
+        stage('manual approval') {
+            steps {
+                timeout(time: 60, unit: 'MINUTES') {
+                    input message: "Move to stage 3?"
                 }
             }
         }
